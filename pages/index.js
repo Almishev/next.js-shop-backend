@@ -51,17 +51,17 @@ export default function Home() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
       <div className="bg-white rounded-lg shadow p-4">
         <div className="text-gray-500 text-sm">Приходи днес</div>
-        <div className="text-3xl font-bold">{stats ? `лв ${stats.revenue.today.toLocaleString('bg-BG')}` : '-'}</div>
+        <div className="text-3xl font-bold">{stats ? `лв ${stats.revenue.today.toLocaleString()}` : '-'}</div>
         <div className="text-xs text-gray-400 mt-1">{stats?.orders.today ?? 0} поръчки</div>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
         <div className="text-gray-500 text-sm">Приходи тази седмица</div>
-        <div className="text-3xl font-bold">{stats ? `лв ${stats.revenue.week.toLocaleString('bg-BG')}` : '-'}</div>
+        <div className="text-3xl font-bold">{stats ? `лв ${stats.revenue.week.toLocaleString()}` : '-'}</div>
         <div className="text-xs text-gray-400 mt-1">{stats?.orders.week ?? 0} поръчки</div>
       </div>
       <div className="bg-white rounded-lg shadow p-4">
         <div className="text-gray-500 text-sm">Приходи този месец</div>
-        <div className="text-3xl font-bold">{stats ? `лв ${stats.revenue.month.toLocaleString('bg-BG')}` : '-'}</div>
+        <div className="text-3xl font-bold">{stats ? `лв ${stats.revenue.month.toLocaleString()}` : '-'}</div>
         <div className="text-xs text-gray-400 mt-1">{stats?.orders.month ?? 0} поръчки</div>
       </div>
     </div>
