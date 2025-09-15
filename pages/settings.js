@@ -42,14 +42,14 @@ function SettingsPage({swal}) {
       });
       
       swal.fire({
-        title: 'Success!',
-        text: 'Settings saved successfully',
+        title: 'Успех!',
+        text: 'Настройките са запазени успешно',
         icon: 'success',
       });
     } catch (error) {
       swal.fire({
-        title: 'Error!',
-        text: 'Failed to save settings',
+        title: 'Грешка!',
+        text: 'Неуспешно запазване на настройките',
         icon: 'error',
       });
     } finally {
@@ -59,14 +59,14 @@ function SettingsPage({swal}) {
 
   return (
     <Layout>
-      <h1>Settings</h1>
+      <h1>Настройки</h1>
       <form onSubmit={saveSettings} className="max-w-md">
-        <label>Featured product</label>
+        <label>Препоръчан продукт</label>
         <select 
           value={featuredProductId}
           onChange={ev => setFeaturedProductId(ev.target.value)}
         >
-          <option value="">Select a product</option>
+          <option value="">Избери продукт</option>
           {products.length > 0 && products.map(product => (
             <option key={product._id} value={product._id}>
               {product.title}
@@ -74,7 +74,7 @@ function SettingsPage({swal}) {
           ))}
         </select>
         
-        <label>Shipping price (in usd)</label>
+        <label>Цена на доставка (в BGN)</label>
         <input 
           type="number" 
           placeholder="5"
@@ -87,7 +87,7 @@ function SettingsPage({swal}) {
           className="btn-primary"
           disabled={loading}
         >
-          {loading ? 'Saving...' : 'Save settings'}
+          {loading ? 'Запазване...' : 'Запази настройките'}
         </button>
       </form>
     </Layout>

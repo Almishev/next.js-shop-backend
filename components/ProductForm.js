@@ -12,6 +12,7 @@ export default function ProductForm({
   images:existingImages,
   category:assignedCategory,
   properties:assignedProperties,
+  stock:existingStock,
 }) {
   const [title,setTitle] = useState(existingTitle || '');
   const [description,setDescription] = useState(existingDescription || '');
@@ -19,6 +20,7 @@ export default function ProductForm({
   const [productProperties,setProductProperties] = useState(assignedProperties || {});
   const [price,setPrice] = useState(existingPrice || '');
   const [images,setImages] = useState(existingImages || []);
+  const [stock,setStock] = useState(existingStock ?? 0);
   const [goToProducts,setGoToProducts] = useState(false);
   const [isUploading,setIsUploading] = useState(false);
   const [categories,setCategories] = useState([]);
@@ -31,7 +33,7 @@ export default function ProductForm({
   async function saveProduct(ev) {
     ev.preventDefault();
     const data = {
-      title,description,price,images,category,
+      title,description,price,images,category,stock,
       properties:productProperties
     };
     if (_id) {
@@ -85,20 +87,26 @@ export default function ProductForm({
 
   return (
       <form onSubmit={saveProduct}>
-        <label>Product name</label>
+        <label>Име на продукта</label>
         <input
           type="text"
-          placeholder="product name"
+          placeholder="име на продукта"
           value={title}
           onChange={ev => setTitle(ev.target.value)}/>
-        <label>Category</label>
+        <label>Категория</label>
         <select value={category}
                 onChange={ev => setCategory(ev.target.value)}>
-          <option value="">Uncategorized</option>
+          <option value="">Без категория</option>
           {categories.length > 0 && categories.map(c => (
             <option key={c._id} value={c._id}>{c.name}</option>
           ))}
         </select>
+        <label>Наличност (бр.)</label>
+        <input
+          type="number"
+          min="0"
+          value={stock}
+          onChange={ev => setStock(parseInt(ev.target.value || '0',10))}/>
         {propertiesToFill.length > 0 && propertiesToFill.map(p => (
           <div key={p.name} className="">
             <label>{p.name[0].toUpperCase()+p.name.substring(1)}</label>
@@ -116,7 +124,7 @@ export default function ProductForm({
           </div>
         ))}
         <label>
-          Photos
+          Снимки
         </label>
         <div className="mb-2 flex flex-wrap gap-1">
           <ReactSortable
@@ -139,27 +147,27 @@ export default function ProductForm({
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
             </svg>
             <div>
-              Add image
+              Добави снимка
             </div>
             <input type="file" onChange={uploadImages} className="hidden"/>
           </label>
         </div>
-        <label>Description</label>
+        <label>Описание</label>
         <textarea
-          placeholder="description"
+          placeholder="описание"
           value={description}
           onChange={ev => setDescription(ev.target.value)}
         />
-        <label>Price (in USD)</label>
+        <label>Цена (в BGN)</label>
         <input
-          type="number" placeholder="price"
+          type="number" placeholder="цена"
           value={price}
           onChange={ev => setPrice(ev.target.value)}
         />
         <button
           type="submit"
           className="btn-primary">
-          Save
+          Запази
         </button>
       </form>
   );

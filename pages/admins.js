@@ -21,8 +21,8 @@ function Admins({swal}) {
     ev.preventDefault();
     if (!email) {
       swal.fire({
-        title: 'Error',
-        text: 'Please enter an email address',
+        title: 'Грешка',
+        text: 'Моля, въведете имейл адрес',
         icon: 'error',
       });
       return;
@@ -33,14 +33,14 @@ function Admins({swal}) {
       setEmail('');
       fetchAdmins();
       swal.fire({
-        title: 'Success',
-        text: 'Admin added successfully',
+        title: 'Успех',
+        text: 'Администраторът е добавен успешно',
         icon: 'success',
       });
     } catch (error) {
       swal.fire({
-        title: 'Error',
-        text: error.response?.data?.message || 'Failed to add admin',
+        title: 'Грешка',
+        text: error.response?.data?.message || 'Неуспешно добавяне на администратор',
         icon: 'error',
       });
     }
@@ -48,11 +48,11 @@ function Admins({swal}) {
 
   function removeAdmin(admin) {
     swal.fire({
-      title: 'Are you sure?',
-      text: `Do you want to remove ${admin.email}?`,
+      title: 'Сигурни ли сте?',
+      text: `Искате ли да премахнете ${admin.email}?`,
       showCancelButton: true,
-      cancelButtonText: 'Cancel',
-      confirmButtonText: 'Yes, Delete!',
+      cancelButtonText: 'Отказ',
+      confirmButtonText: 'Да, изтрий!',
       confirmButtonColor: '#d55',
       reverseButtons: true,
     }).then(async result => {
@@ -60,8 +60,8 @@ function Admins({swal}) {
         await axios.delete('/api/admins?_id='+admin._id);
         fetchAdmins();
         swal.fire({
-          title: 'Deleted!',
-          text: 'Admin has been removed.',
+          title: 'Изтрито!',
+          text: 'Администраторът е премахнат.',
           icon: 'success',
         });
       }
@@ -70,30 +70,30 @@ function Admins({swal}) {
 
   return (
     <Layout>
-      <h1>Admins</h1>
+      <h1>Администратори</h1>
       <form onSubmit={addAdmin}>
-        <label>Add new admin</label>
+        <label>Добави нов администратор</label>
         <div className="flex gap-2">
           <input
             type="text"
             className="mb-0"
             value={email}
             onChange={ev => setEmail(ev.target.value)}
-            placeholder="google email" />
+            placeholder="google имейл" />
           <button
             type="submit"
             className="btn-primary whitespace-nowrap">
-            Add admin
+            Добави администратор
           </button>
         </div>
       </form>
 
-      <h2>Existing admins</h2>
+      <h2>Съществуващи администратори</h2>
       <table className="basic">
         <thead>
           <tr>
-            <th>Admin Google Email</th>
-            <th>Date created</th>
+            <th>Google имейл на администратора</th>
+            <th>Дата на създаване</th>
             <th></th>
           </tr>
         </thead>
@@ -108,7 +108,7 @@ function Admins({swal}) {
                 <button
                   onClick={() => removeAdmin(admin)}
                   className="btn-red">
-                  Delete
+                  Изтрий
                 </button>
               </td>
             </tr>
