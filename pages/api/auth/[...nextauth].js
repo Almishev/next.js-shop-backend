@@ -18,16 +18,31 @@ export const authOptions = {
       clientSecret: process.env.FACEBOOK_SECRET,
       authorization: {
         params: {
-          scope: 'public_profile'
+          scope: 'public_profile email'
         }
-      }
+      },
+      profile(profile) {
+        // Нормализиране на Facebook профила към NextAuth полета
+        // Email ще е наличен само ако потребителят има валиден email и е дал разрешение
+        return {
+          id: profile.id,
+          name: profile.name,
+          email: profile.email ?? null,
+          image: profile.picture?.data?.url ?? null,
+        }
+      },
     }),
   ],
   adapter: MongoDBAdapter(clientPromise),
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log('SignIn callback:', user.email);
-      return true; // Allow all sign-ins for now
+      console.log('SignIn callback:', user.email, account?.provider);
+      // За Facebook понякога няма email -> откажи достъпа ако няма email, защото админ логиката разчита на него
+      if (account?.provider === 'facebook' && !user?.email) {
+        console.warn('Facebook sign-in blocked: missing email permission');
+        return false;
+      }
+      return true;
     },
         async session({ session, token, user }) {
           console.log('Session callback - User email:', session?.user?.email);
