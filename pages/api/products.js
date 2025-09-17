@@ -1,6 +1,7 @@
 import {Product} from "@/models/Product";
 import {mongooseConnect} from "@/lib/mongoose";
 import {isAdminRequest} from "@/pages/api/auth/[...nextauth]";
+import {deleteS3Objects} from "@/lib/s3";
 
 export default async function handle(req, res) {
   const {method} = req;
@@ -31,7 +32,11 @@ export default async function handle(req, res) {
 
   if (method === 'DELETE') {
     if (req.query?.id) {
-      await Product.deleteOne({_id:req.query?.id});
+      const prod = await Product.findById(req.query.id);
+      const images = Array.isArray(prod?.images) ? prod.images : [];
+      await Product.deleteOne({_id:req.query.id});
+      // Best-effort S3 cleanup
+      await deleteS3Objects(images);
       res.json(true);
     }
   }

@@ -2,6 +2,7 @@ import {Category} from "@/models/Category";
 import {mongooseConnect} from "@/lib/mongoose";
 import {getServerSession} from "next-auth";
 import {authOptions, isAdminRequest} from "@/pages/api/auth/[...nextauth]";
+import {deleteS3Object} from "@/lib/s3";
 
 export default async function handle(req, res) {
   const {method} = req;
@@ -36,7 +37,12 @@ export default async function handle(req, res) {
 
   if (method === 'DELETE') {
     const {_id} = req.query;
+    const cat = await Category.findById(_id);
+    const imageUrl = cat?.image;
     await Category.deleteOne({_id});
+    if (imageUrl) {
+      await deleteS3Object(imageUrl);
+    }
     res.json('ok');
   }
 }
