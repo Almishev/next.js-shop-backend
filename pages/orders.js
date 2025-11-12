@@ -35,7 +35,10 @@ export default function OrdersPage() {
             <td className="py-3">{(new Date(order.createdAt)).toLocaleString()}
             </td>
             <td className={`py-3 ${order.paid ? 'text-green-600' : 'text-orange-600'}`}>
-              {order.paid ? 'ПЛАТЕНА' : 'НАЛОЖЕН ПЛАТЕЖ'}
+              {order.paid 
+                ? (order.paymentMethod === 'stripe' ? '💳 ЕЛЕКТРОННО ПЛАЩАНЕ' : '💰 НАЛОЖЕН ПЛАТЕЖ')
+                : (order.paymentMethod === 'stripe' ? '⏳ ОЧАКВА ПЛАЩАНЕ (Stripe)' : '💰 НАЛОЖЕН ПЛАТЕЖ')
+              }
             </td>
             <td className="py-3">
               <div className="font-semibold">{order.name}</div>
